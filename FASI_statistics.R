@@ -43,6 +43,7 @@ library(rstatix) # pairwise Tukey test
 library(viridis) # colorblind-friendly color maps + 
 library(ggrepel) # figure clarity
 library(ggpp) # figure clarity
+library(renv) # R environment versioning
 
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # LOAD FUNCTIONS                                                               ####
@@ -706,7 +707,9 @@ rm(Alg_dist, Alg_clust, clust_col)
 
 
 
-#### SIMPER
+#++++++++++++
+# SIMPER #### 
+#++++++++++++
 
 # run SIMPER
 full_algal_simper <- simper(FA_only)
@@ -726,8 +729,9 @@ topsimp <- simpersum %>%
 rm(full_algal_simper)
 
 
-
-#### PERMANOVAs
+#++++++++++++++++
+# PERMANOVAs ####
+#++++++++++++++++
 
 ## ALL FA
 
@@ -830,8 +834,9 @@ adonis2(abs(PC_only_SI) ~ revisedSpecies,
 rm(D_only_FA, D_only_SI, PC_only_FA, PC_only_SI)
 
 
-
-#### nMDS
+#++++++++++
+# nMDS ####
+#++++++++++
 
 ## FA nMDS
 
@@ -922,10 +927,11 @@ ggplot(plot_data_tax, aes(x=MDS1, y=MDS2,
 rm(FA_mds, FA_mds_points, SI_mds, SI_mds_points, plot_data_tax)
 
 
+#++++++++++
+# PCAs ####
+#++++++++++
 
-#### PCAs
-
-# ALL FA
+## ALL FA
 PCA_results <-  rda(FA_only, scale = TRUE)
 
 # extract PCA coordinates
@@ -960,7 +966,7 @@ ggplot(uscores1) +
   labs(x=paste0("PC1: ",round(var_explained[1]*100,1),"%"),
        y=paste0("PC2: ",round(var_explained[2]*100,1),"%"))
 
-# REDUCED FA
+## REDUCED FA
 PCA_results <-  rda(FA_tax_reduced[,1:7], scale = TRUE)
 
 # extract PCA coordinates
@@ -995,7 +1001,7 @@ ggplot(uscores1) +
   labs(x=paste0("PC1: ",round(var_explained[1]*100,1),"%"),
        y=paste0("PC2: ",round(var_explained[2]*100,1),"%"))
 
-# SI ONLY
+## SI ONLY
 PCA_results <-  rda(SI_tax[,3:5], scale = TRUE)
 
 # extract PCA coordinates
@@ -1030,7 +1036,7 @@ ggplot(uscores1) +
   labs(x=paste0("PC1: ",round(var_explained[1]*100,1),"%"),
        y=paste0("PC2: ",round(var_explained[2]*100,1),"%"))
 
-# ALL BIOMARKERS
+## ALL BIOMARKERS
 PCA_results <-  rda(marker_only, scale = TRUE)
 
 # extract PCA coordinates
@@ -1072,7 +1078,7 @@ ggplot(uscores1) +
   labs(x=paste0("PC1: ",round(var_explained[1]*100,1),"%"),
        y=paste0("PC2: ",round(var_explained[2]*100,1),"%"))
 
-# SI AND REDUCED FA
+## SI AND REDUCED FA
 reducedFA_SI <- overlap_species %>%
   select(`CN ratio`:`d13C`, `20:5w3`, `20:4w6`, `16:0`, `18:3w3`, `18:4w3c`, `18:1w9c`, `18:1w7c`) 
 PCA_results <-  rda(reducedFA_SI, scale = TRUE)
@@ -1108,8 +1114,9 @@ ggplot(uscores1) +
   xlim(-0.45, 0.5)
 
 
-
-#### BIPLOTs
+#+++++++++++++
+# BIPLOTs ####
+#+++++++++++++
 
 # delta figure species
 ggplot(sumspecies) +
@@ -1171,7 +1178,10 @@ SI_tax %>%
   theme(axis.title.x = element_text(vjust = -1)) +
   theme(axis.title.y = element_text(vjust = 2.5))
 
-# ANOVA of differences between C:N ratios of divisions
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ANOVA of differences between C:N ratios of divisions ####
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 CN_lm <- lm(log10(`CN ratio`) ~ phylum, data = SI_tax)
 CN_ANOVA <- anova(CN_lm)
 summary(CN_lm)
