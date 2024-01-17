@@ -49,6 +49,9 @@ library(renv) # R environment versioning
 # LOAD FUNCTIONS                                                               ####
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+# load renv environment
+# renv::restore()
+
 # function for "%notin%
 `%notin%` <- Negate(`%in%`)
 
